@@ -2,12 +2,14 @@
 
 TODO :
 
-MISC :
+<U>MISC</U> :
+
 1) nom pour le projet
 
 2) Type de jeu ? Fonctionnalités ? Scope ?
 
 UI :
+
 1) Menu principal
 
 2) Menu en cours de partie
