@@ -50,6 +50,14 @@ public class Lane extends ImageView {
         return (screenWidth/maxLane)*laneNumber + (screenWidth/6 * 45/100);
     }
 
+    public int getLaneNumber() {
+        return laneNumber;
+    }
+
+    public void setLaneNumber(int laneNumber) {
+        this.laneNumber = laneNumber;
+    }
+
     protected void onDraw(Canvas canvas) {
         mDrawable.draw(canvas);
     }

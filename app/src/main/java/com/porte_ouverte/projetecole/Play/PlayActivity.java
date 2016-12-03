@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
+import android.widget.Toast;
+
 import java.util.HashMap;
 import com.porte_ouverte.projetecole.*;
 import com.porte_ouverte.projetecole.Utils.Helper;
@@ -20,6 +22,7 @@ public class PlayActivity extends AppCompatActivity {
     private int screenWidthWithMargin;
     private HashMap<Integer, Lane> listLanes = new HashMap();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,22 +35,6 @@ public class PlayActivity extends AppCompatActivity {
         screenWidthWithMargin = Helper.getScreenWidth() - 100;
         //we set to fullscreen
         setToFullScreen();
-        //for testing
-        mContentView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.d(TAG, "HELLLLLLLLLLLLO");
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    Starship hello = new Starship(PlayActivity.this);
-                    hello.setX(event.getX());
-                    hello.setY(event.getY());
-                    mContentView.addView(hello);
-                    Log.d(TAG, "HELLLLLLLLLLLLO");
-                }
-                return false;
-            }
-        });
-
 
     //the user has a way to put the screen back in fullscreen(just in case)
         mContentView.setOnClickListener(new View.OnClickListener() {
@@ -56,13 +43,35 @@ public class PlayActivity extends AppCompatActivity {
                 setToFullScreen();
             }
         });
+        //we place the lanes
+        placeLanes(8);
+        final Starship hello = new Starship(this, screenWidthWithMargin, listLanes);
+        mContentView.addView(hello);
+        //for testing
+        mContentView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d(TAG, "HELLLLLLLLLLLLO");
+                if(event.getAction() == MotionEvent.ACTION_UP && event.getX() < Helper.getScreenWidth()/2) {
+                    hello.switchLaneLeft(listLanes, 3000);
+                    Log.d(TAG, "LEFT");
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP && event.getX() > Helper.getScreenWidth()/2) {
+                    hello.switchLaneRight(listLanes, 3000);
+                    Log.d(TAG, "RIGHT");
+                }
+                return false;
+            }
+        });
+
+
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
          setToFullScreen();
-         placeLanes(8);
 
     }
     //fonction creating the number of lane desired and keeping them in a HashMap for easy access
