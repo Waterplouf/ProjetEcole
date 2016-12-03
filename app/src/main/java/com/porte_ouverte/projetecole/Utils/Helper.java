@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.util.TypedValue;
 
 public class Helper {
-
+    //converts PX to DP
     public static int pixelsToDp(int px, Context context) {
         return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, px,

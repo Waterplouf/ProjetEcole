@@ -7,14 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
-
-
-import com.porte_ouverte.projetecole.*;
-
 import java.util.HashMap;
-
-import static com.porte_ouverte.projetecole.Utils.Helper.getScreenHeight;
-import static com.porte_ouverte.projetecole.Utils.Helper.getScreenWidth;
+import com.porte_ouverte.projetecole.*;
+import com.porte_ouverte.projetecole.Utils.Helper;
 
 
 public class PlayActivity extends AppCompatActivity {
@@ -29,16 +24,15 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
-
-        //getWindow().setBackgroundDrawableResource(R.drawable.space_background);
+        //We keep a reference to the whole screen (the frame_Layout is our main screen)
         mContentView = (ViewGroup) findViewById(R.id.frame_Layout);
+        //for testing
         mContentView.setBackgroundColor(Color.BLUE);
 
-        screenWidthWithMargin = getScreenWidth() - 100;
-        //avant de prendre les dimensions de l'écran, on doit s'assurer que l'écran est en FullScreen
-        //et on rajoute un global listener pour s'assurer qu'on reçoive les bonnes valeurs au bon moment
-
+        screenWidthWithMargin = Helper.getScreenWidth() - 100;
+        //we set to fullscreen
         setToFullScreen();
+        //for testing
         mContentView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -53,12 +47,9 @@ public class PlayActivity extends AppCompatActivity {
                 return false;
             }
         });
-        Log.d(TAG, "WIDTH 3 :" + String.valueOf(getScreenWidth()));
-        Log.d(TAG, "hEIGHT 3 :" + String.valueOf(getScreenHeight()));
 
 
-
-    //permet a l'utilisateur de remettre le fullscreen
+    //the user has a way to put the screen back in fullscreen(just in case)
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,20 +65,24 @@ public class PlayActivity extends AppCompatActivity {
          placeLanes(8);
 
     }
-
+    //fonction creating the number of lane desired and keeping them in a HashMap for easy access
     protected void placeLanes(int nbrLanes) {
-       for(int i = 1; i<= nbrLanes; i++) {
-           Lane lane = new Lane(this, screenWidthWithMargin, i, nbrLanes);
-           mContentView.addView(lane);
-           listLanes.put(i, lane);
 
+        for(int i = 1; i<= nbrLanes; i++) {
+            //the Lanes keep track of their own center and border
+           Lane lane = new Lane(this, screenWidthWithMargin, i, nbrLanes);
+           //we add the lane to the mainScreen(debatable if useful or not ?)
+            mContentView.addView(lane);
+            //we keep the lanes in a HashMap
+           listLanes.put(i, lane);
+            //for testing
            Log.d(TAG, "HHH LEFT " + String.valueOf(lane.getLeftPX()));
            Log.d(TAG, "HHH CENTER  "+ String.valueOf(lane.getCenterPX()));
            Log.d(TAG, "HHH RIGHT  " + String.valueOf(lane.getRightPX()));
        }
     }
 
-    //    method pour mettre en full screen
+    //fonction for immersive fullscreen
     protected void setToFullScreen() {
 
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
