@@ -1,10 +1,14 @@
 package com.porte_ouverte.projetecole.Play;
 
-import android.content.res.Resources;
+
+import android.graphics.Color;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
+
+
 import com.porte_ouverte.projetecole.*;
 
 import java.util.HashMap;
@@ -26,13 +30,29 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        getWindow().setBackgroundDrawableResource(R.drawable.space_background);
-        mContentView = (ViewGroup) findViewById(R.id.activity_play);
+        //getWindow().setBackgroundDrawableResource(R.drawable.space_background);
+        mContentView = (ViewGroup) findViewById(R.id.frame_Layout);
+        mContentView.setBackgroundColor(Color.BLUE);
+
         screenWidthWithMargin = getScreenWidth() - 100;
         //avant de prendre les dimensions de l'écran, on doit s'assurer que l'écran est en FullScreen
         //et on rajoute un global listener pour s'assurer qu'on reçoive les bonnes valeurs au bon moment
-        setToFullScreen();
 
+        setToFullScreen();
+        mContentView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d(TAG, "HELLLLLLLLLLLLO");
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    Starship hello = new Starship(PlayActivity.this);
+                    hello.setX(event.getX());
+                    hello.setY(event.getY());
+                    mContentView.addView(hello);
+                    Log.d(TAG, "HELLLLLLLLLLLLO");
+                }
+                return false;
+            }
+        });
         Log.d(TAG, "WIDTH 3 :" + String.valueOf(getScreenWidth()));
         Log.d(TAG, "hEIGHT 3 :" + String.valueOf(getScreenHeight()));
 
@@ -50,15 +70,15 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setToFullScreen();
-        placeLanes(8);
+         setToFullScreen();
+         placeLanes(8);
 
     }
 
     protected void placeLanes(int nbrLanes) {
        for(int i = 1; i<= nbrLanes; i++) {
            Lane lane = new Lane(this, screenWidthWithMargin, i, nbrLanes);
-           setContentView(lane);
+           mContentView.addView(lane);
            listLanes.put(i, lane);
 
            Log.d(TAG, "HHH LEFT " + String.valueOf(lane.getLeftPX()));
@@ -69,6 +89,7 @@ public class PlayActivity extends AppCompatActivity {
 
     //    method pour mettre en full screen
     protected void setToFullScreen() {
+
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE

@@ -14,17 +14,18 @@ import android.widget.ImageView;
 //Taille d'une lane
 public class Lane extends ImageView {
     private ShapeDrawable mDrawable;
-    //Valeur en px du milieu de la lane sur l'écran
+    //Value in px from the middle of the lane to the left of the screen
     private int centerPX;
     private int laneNumber; // number of the line (1 on the far left)
     private int maxLane; // total number of lanes
-    private int screenWidth;
+    private int screenWidth; // Max screen width - 100px(margin)
 
     public Lane(Context context, int screenWidth, int laneNumber, int maxLane) {
         super(context);
         this.screenWidth = screenWidth;
         this.laneNumber = laneNumber;
         this.maxLane = maxLane;
+        //We calculate the center PX by dividing the screen width by the max number of lanes * the actual number of the lane
         centerPX = screenWidth / maxLane * laneNumber;
 
         mDrawable = new ShapeDrawable(new OvalShape());
