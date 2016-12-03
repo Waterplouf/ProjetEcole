@@ -29,8 +29,8 @@ public class Lane extends ImageView {
         centerPX = screenWidth / maxLane * laneNumber;
 
         //useless for the moment
-        //mDrawable = new ShapeDrawable(new OvalShape());
-        //mDrawable.getPaint().setColor(0xff74AC23);
+        mDrawable = new ShapeDrawable(new OvalShape());
+        mDrawable.getPaint().setColor(0xff74AC23);
     }
 
 
